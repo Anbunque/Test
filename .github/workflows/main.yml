@@ -1,14 +1,18 @@
 name: Library Management App Build
 
 on:
+  # Runs on push to main or master branch
   push:
     branches:
       - main
       - master
+  # Runs on pull request events targeting main or master branch
   pull_request:
     branches:
       - main
       - master
+
+  # Allows manual triggering of the workflow
   workflow_dispatch:
 
 env:
@@ -29,24 +33,24 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: Debug file structure
-      run: ls -R
+    - name: Set Environment Variables
+      run: |
+        echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
 
     - name: Install Dependencies
       run: |
-        if [ -f requirements.txt ]; then
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-        else
-          echo "requirements.txt not found. Skipping dependency installation."
-        fi
+        python -m pip install --upgrade pip
+        pip install pymongo
+        pip install flask
 
     - name: Run Tests
       run: |
-        python -m unittest discover -s tests || echo "No tests found, skipping."
+        # Replace with your test command or script
+        python -m unittest discover -s tests
 
     - name: Package Application
       run: |
+        # Use PyInstaller to create an executable (adjust if needed)
         pip install pyinstaller
         pyinstaller --onefile app.py
 
