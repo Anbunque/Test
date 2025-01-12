@@ -54,28 +54,25 @@ jobs:
         pip install flask
         pip install pymongo
 
-    - name: Start Ngrok Tunnel
+    - name: Start Ngrok Tunnel (Foreground)
       run: |
-        Start-Process ngrok -ArgumentList "http 5000" -PassThru | Out-Null  # Start ngrok as a background process
-
-    - name: Wait for Ngrok to Initialize
-      run: |
-        # Wait for Ngrok to establish the tunnel and log the URL (increased wait time)
-        Start-Sleep -Seconds 30  # Increased wait time to ensure Ngrok has time to initialize
+        # Start ngrok in the foreground and log output to a specific file
+        ngrok http 5000 > ngrok.log &  # Start ngrok and log to ngrok.log
+        Start-Sleep -Seconds 30  # Give Ngrok time to establish the tunnel
 
     - name: Verify Ngrok Tunnel
       run: |
-        # Attempt to get Ngrok's public URL from the logs by reading ngrok.log
+        # Try to read ngrok.log to ensure tunnel information is logged
         $ngrokLogPath = "ngrok.log"
         if (Test-Path $ngrokLogPath) {
-          Get-Content $ngrokLogPath -Tail 20
+          Get-Content $ngrokLogPath -Tail 20  # Get last 20 lines of ngrok log
         } else {
           Write-Host "Ngrok log file does not exist yet."
         }
 
     - name: Check Ngrok Tunnel via API (Retry)
       run: |
-        # Check if Ngrok's API is available and retry if not immediately available
+        # Retry checking Ngrok's tunnel status
         $retries = 5
         $url = "http://localhost:4040/api/tunnels"
         $success = $false
@@ -87,7 +84,7 @@ jobs:
             break
           } catch {
             Write-Host "Ngrok not yet available, retrying... ($($i+1)/$retries)"
-            Start-Sleep -Seconds 5  # Wait 5 seconds before retrying
+            Start-Sleep -Seconds 10  # Wait 10 seconds before retrying
           }
         }
         if (-not $success) {
