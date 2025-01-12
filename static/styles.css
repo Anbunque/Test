@@ -210,3 +210,37 @@ footer {
     }
 }
 
+/* Default styles (for larger screens) */
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  /* Styles for devices with a screen width of 768px or less (tablets and smaller screens) */
+  @media (max-width: 768px) {
+    header {
+      padding: 20px;
+    }
+  
+    .content {
+      padding: 10px;
+    }
+  }
+  
+  /* Styles for devices with a screen width of 480px or less (mobile devices) */
+  @media (max-width: 480px) {
+    header {
+      font-size: 18px;
+    }
+  
+    .content {
+      font-size: 14px;
+    }
+  }
+  

@@ -13,9 +13,17 @@
             background-attachment: fixed;
             background-position: center;">
     <center><h1 class="inlin">Admin Dashboard</h1>
-    {% if message %}
-    <p class="message">{{ message }}</p>
-    {% endif %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p class="message" id="message">{{ messages[0] }}</p>
+            <script>
+                // Wait for 2.5 seconds before hiding the message
+                setTimeout(function() {
+                    document.getElementById("message").style.display = 'none';
+                }, 2500); // 2500 milliseconds = 2.5 seconds
+            </script>
+        {% endif %}
+        {% endwith %}
     <h2 style="color: rgb(255, 255, 255);">Add a Book</h2>
     <div class="MainPage"><form action="/admin/dashboard" method="post" style="margin-top: 20px;">
     <input type="text" name="title" placeholder="Book Title" required>
@@ -29,5 +37,41 @@
 </form></div></center>
 
    <center><button class="availbutton" onclick="window.location.href='/logout'"> <a href="/logout">Logout</a></button></center>
+
+   <style>
+    .message {
+        position: fixed;
+        top: 10px; /* Distance from the top */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%);
+        background-color: #c8f5ce; /* Light red for error or use a different color */
+        color: #40c040; /* Dark red text */
+        border: 1px solid #f5c6cb;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        z-index: 1000; /* Ensures it stays on top */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: fadeInOut 2.5s forwards;
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+        }
+        10% {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+        }
+    }
+</style>
 </body>
 </html>
