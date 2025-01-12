@@ -44,11 +44,19 @@ jobs:
           Write-Host "MongoDB service is already running."
         }
 
+    - name: Install Ngrok
+      run: |
+        choco install ngrok
+
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flask
         pip install pymongo
+
+    - name: Start Ngrok Tunnel
+      run: |
+        ngrok http 5000 > ngrok.log &  # Start ngrok and redirect logs to a file
 
     - name: Run Flask App
       run: |
