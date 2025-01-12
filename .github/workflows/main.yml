@@ -54,11 +54,11 @@ jobs:
         pip install flask
         pip install pymongo
 
-    - name: Start Ngrok Tunnel (Foreground with Longer Wait)
+    - name: Start Ngrok Tunnel
       run: |
-        # Start ngrok in the foreground and log to ngrok.log
-        Start-Process ngrok -ArgumentList "http 5000" -PassThru | Out-Null
-        Start-Sleep -Seconds 45  # Increase wait time to give Ngrok enough time to establish the tunnel
+        # Start ngrok and log its output directly to the console to verify its startup
+        ngrok http 5000 --log=stdout &
+        Start-Sleep -Seconds 30  # Allow enough time for Ngrok to initialize
 
     - name: Retry Checking Ngrok Tunnel via API
       run: |
