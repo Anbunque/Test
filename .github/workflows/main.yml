@@ -37,7 +37,12 @@ jobs:
     - name: Install MongoDB
       run: |
         choco install mongodb --version=4.4.6
-        net start MongoDB  # Start MongoDB service
+        # Check if MongoDB service is running, if not, start it
+        if (-not (Get-Service MongoDB -ErrorAction SilentlyContinue)) {
+          net start MongoDB
+        } else {
+          Write-Host "MongoDB service is already running."
+        }
 
     - name: Install Dependencies
       run: |
