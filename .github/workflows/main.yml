@@ -58,6 +58,21 @@ jobs:
       run: |
         ngrok http 5000 > ngrok.log &  # Start ngrok and redirect logs to a file
 
+    - name: Wait for Ngrok to initialize
+      run: |
+        # Wait for Ngrok to establish the tunnel and log the URL
+        Start-Sleep -Seconds 10
+        # Display the last 10 lines of ngrok.log to get the public URL
+        Get-Content ngrok.log -Tail 10
+
+    - name: Verify Ngrok Tunnel
+      run: |
+        curl http://localhost:4040/api/tunnels  # Ngrok provides an API to check the tunnel status
+
+    - name: Display Ngrok Log
+      run: |
+        Get-Content ngrok.log -Tail 20  # Display the last 20 lines of the ngrok log to check for URL details
+
     - name: Run Flask App
       run: |
         python "V3 Komplete/app.py"  # Running the app.py to start the Flask server
