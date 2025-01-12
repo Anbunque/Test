@@ -58,12 +58,20 @@ jobs:
       run: |
         Start-Process ngrok -ArgumentList "http 5000" -PassThru | Out-Null  # Start ngrok as a background process
 
-    - name: Wait for Ngrok to initialize
+    - name: Wait for Ngrok to Initialize
       run: |
-        # Wait for Ngrok to establish the tunnel and log the URL
-        Start-Sleep -Seconds 10
-        # Verify ngrok is running and fetch the URL
-        curl http://localhost:4040/api/tunnels  # Ngrok provides an API to check the tunnel status
+        # Wait for Ngrok to establish the tunnel and log the URL (increased wait time)
+        Start-Sleep -Seconds 30  # Increased wait time to ensure Ngrok has time to initialize
+
+    - name: Check Ngrok Process
+      run: |
+        # Check if Ngrok is running and display its status
+        Get-Process ngrok -ErrorAction SilentlyContinue
+
+    - name: Verify Ngrok Tunnel
+      run: |
+        # Check Ngrok tunnel status by querying its API
+        curl http://localhost:4040/api/tunnels
 
     - name: Display Ngrok Log
       run: |
