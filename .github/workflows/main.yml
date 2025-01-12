@@ -33,11 +33,13 @@ jobs:
       run: |
         echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
 
-    - name: Install Dependencies
+    - name: Install Dependencies and pyinstaller
       run: |
         python -m pip install --upgrade pip
         pip install pymongo 
         pip install flask
+        pip install pyinstaller
+        pip show pyinstaller  # To verify that pyinstaller was installed
 
     - name: Run Tests
       run: |
@@ -52,13 +54,8 @@ jobs:
       run: |
         dir "V3 Komplete"
 
-    - name: Check pyinstaller version
-      run: |
-        pip show pyinstaller
-
     - name: Package Application
       run: |
-        pip install pyinstaller
         cd "V3 Komplete"  # Change to the correct directory
         pyinstaller --onefile --debug app.py
 
