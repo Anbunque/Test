@@ -51,7 +51,7 @@ jobs:
     - name: Package Application
       run: |
         pip install pyinstaller
-        pyinstaller --onefile app.py
+        pyinstaller --onefile "V3 Komplete/app.py"
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4.3.4
