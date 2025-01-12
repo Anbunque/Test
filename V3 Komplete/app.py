@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
 from pymongo import MongoClient
@@ -8,7 +9,8 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Used for session management
 
 # MongoDB connection setup
-client = MongoClient("mongodb+srv://anbumani:Anbu007@cluster0.poivzxq.mongodb.net/")  # Replace with your actual MongoDB connection string
+mongo_uri = os.getenv("MONGO_URI")
+client = MongoClient(mongo_uri)  # Replace with your actual MongoDB connection string
 db = client.get_database('library')  # Access the library database
 books_collection = db['books'] 
 lend_collection = db['lend'] 
