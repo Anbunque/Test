@@ -240,5 +240,7 @@ def logout():
     session.pop('admin', None)
     return redirect(url_for('home'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Change this line in your app.py
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+
