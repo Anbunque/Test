@@ -17,30 +17,30 @@ lend_collection = db['lend']
 
 
 # Method to reload books from MongoDB
-def reload_books():
-    global Benlib
-    Benlib.booklist = []  # Clear the existing list
-    books_from_db = books_collection.find()  # Fetch the updated books from MongoDB
-    for book in books_from_db:
-        Benlib.booklist.append(book)
+# def reload_books():
+#     global Benlib
+#     Benlib.booklist = []  # Clear the existing list
+#     books_from_db = books_collection.find()  # Fetch the updated books from MongoDB
+#     for book in books_from_db:
+#         Benlib.booklist.append(book)
         
-# Reconnect to MongoDB every 30 seconds
-def restart_mongo_connection():
-    global client, db, books_collection, lend_collection
-    while True:
-        time.sleep(5)
-        print("Restarting MongoDB connection...")
-        # Re-initialize MongoDB client
-        client = MongoClient("mongodb+srv://anbumani:Anbu007@cluster0.poivzxq.mongodb.net/")  # Replace with your actual MongoDB connection string
-        db = client.get_database('library')  # Access the library database
-        books_collection = db['books']
-        lend_collection = db['lend']
-        print("MongoDB connection restarted.")
+# # Reconnect to MongoDB every 30 seconds
+# def restart_mongo_connection():
+#     global client, db, books_collection, lend_collection
+#     while True:
+#         time.sleep(5)
+#         print("Restarting MongoDB connection...")
+#         # Re-initialize MongoDB client
+#         client = MongoClient("mongodb+srv://anbumani:Anbu007@cluster0.poivzxq.mongodb.net/")  # Replace with your actual MongoDB connection string
+#         db = client.get_database('library')  # Access the library database
+#         books_collection = db['books']
+#         lend_collection = db['lend']
+#         print("MongoDB connection restarted.")
 
-# Start the background thread to restart MongoDB connection
-thread = threading.Thread(target=restart_mongo_connection)
-thread.daemon = True
-thread.start()
+# # Start the background thread to restart MongoDB connection
+# thread = threading.Thread(target=restart_mongo_connection)
+# thread.daemon = True
+# thread.start()
 
 class Library:
     def __init__(self, books, name):
@@ -107,7 +107,7 @@ load_books()
 
 @app.route('/')
 def home():
-    reload_books()  # Reload books from DB
+    # reload_books()  # Reload books from DB
     available_books = [book['title'] for book in Benlib.booklist if book['available']]
     lent_books = [book['title'] for book in Benlib.booklist if not book['available']]
     return render_template('index.html', library=Benlib, available_books=available_books, lent_books=lent_books)
