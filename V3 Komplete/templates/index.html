@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management</title>
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <!-- Include Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <style>
+        body {
+            background-image: url('/static/images/mainbody.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1; /* Make the main content area take up remaining space */
+        }
+
+        select {
+            width: 25%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .message {
+            color: green;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p class="message" id="message">{{ messages[0] }}</p>
+            <script>
+                // Wait for 2.5 seconds before hiding the message
+                setTimeout(function() {
+                    document.getElementById("message").style.display = 'none';
+                }, 2500); // 2500 milliseconds = 2.5 seconds
+            </script>
+        {% endif %}
+        {% endwith %}
+        <style>
+            .message {
+                position: fixed;
+                top: 10px; /* Distance from the top */
+                left: 50%; /* Center horizontally */
+                transform: translateX(-50%);
+                background-color: #f8d7da; /* Light red for error or use a different color */
+                color: #721c24; /* Dark red text */
+                border: 1px solid #f5c6cb;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: bold;
+                z-index: 1000; /* Ensures it stays on top */
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                animation: fadeInOut 2.5s forwards;
+            }
+        
+            @keyframes fadeInOut {
+                0% {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+                10% {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+            }
+        </style>
+        <div>
+            <img src="/static/images/Logo.jpg" alt="" height="75px" width="75px" style="position: absolute;margin-top: 5px;">
+            <h1 class="inlin" style="padding-left: 100px;">Welcome to {{ library.name }}</h1>
+        </div>
+
+        <button class="admin" id="inlin" onclick="window.location.href='/admin'"><a href="/admin">Admin Login</a></button>
+
+        <center>
+            <div class="MainPage" style="margin-top: 150px;">
+                <h2>Lend a Book</h2>
+                <form action="/lend" method="post" id="lend_form">
+                    <label for="book">Select Book to Lend:</label>
+                    <select name="book" id="book" required>
+                        <option value="" disabled selected>Select a Book</option>
+                        {% for book in available_books %}
+                            <option value="{{ book }}">{{ book }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <button type="submit">Lend Book</button>
+                </form>
+
+                <h2>Return a Book</h2>
+                <form method="POST" action="{{ url_for('return_book') }}">
+                    <label for="book">Select Book to Return:</label>
+                    <select name="book" id="return_book" required>
+                        <option value="" disabled selected>Select a Book</option>
+                        {% for book in lent_books %}
+                            <option value="{{ book }}">{{ book }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Return Book</button>
+                </form>
+
+                <button class="b" onclick="window.location.href='/display'"><a href="/display">View Available Books</a></button>
+            </div>
+        </center>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">
+            <iframe 
+                class="map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15585.372476743481!2d79.81965946411084!3d12.426843910510891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a531744e02172eb%3A0xea12170a5bf1d088!2sLakshmi%20Bangaru%20Arts%20%26%20Science%20College!5e0!3m2!1sen!2sus!4v1735913105890!5m2!1sen!2sus"
+                allowfullscreen=""
+                loading="lazy">
+            </iframe>
+        </div>
+        <div class="footer-center">
+            <h3>Welcome to Our Library!</h3>
+            <p>Discover a world of knowledge and inspiration.</p>
+        </div>
+        <div class="footer-right">
+            <h3>Follow Us</h3>
+            <ul>
+                <li><a href="https://www.facebook.com/lbascedu/" target="_blank">Facebook</a></li>
+                <li><a href="https://www.youtube.com/channel/UCX7y-WRe3fZdjrk8sASj_FA" target="_blank">YouTube</a></li>
+                <li><a href="https://twitter.com/lbascedu" target="_blank">Twitter</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Initialize Select2 -->
+    <script>
+        $(document).ready(function() {
+            // Apply Select2 to the book dropdowns
+            $('#book, #return_book').select2({
+                placeholder: 'Search for a book...',
+                allowClear: true
+            });
+    
+            // Handle form submission to return the book
+            $('#return_form').submit(function(event) {
+                event.preventDefault();
+    
+                const selectedBook = $('#return_book').val();
+    
+                if (!selectedBook) {
+                    alert('Please select a book to return.');
+                    return;
+                }
+    
+                // Remove the selected book from the "Return a Book" dropdown
+                $('#return_book option:selected').remove();
+                $('#return_book').trigger('change');
+    
+                // Add the returned book to the "Lend a Book" dropdown
+                $('#book').append(`<option value="${selectedBook}">${selectedBook}</option>`);
+                $('#book').trigger('change');
+    
+                // Submit the form via AJAX to update the backend
+                $.ajax({
+                    type: 'POST',
+                    url: '/return',  // Replace with actual backend endpoint
+                    data: { book: selectedBook },
+                    success: function(response) {
+                        alert(`You have successfully returned the book: ${selectedBook}`);
+                    },
+                    error: function(error) {
+                        alert('Error returning the book. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+    
+
+</body>
+</html>
