@@ -48,11 +48,19 @@ button:hover {
     font-weight: bold;
 }
 
-.b {background-color: rgb(35, 182, 182);}
+.b {    background-color: #17a2b8;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
 
 .b:hover {background-color: aquamarine;}
 
-.admin{position: absolute;
+.admin{position: flex;
     top: 25px;
     right: 10px;
     background-color: rgb(35, 182, 182);
@@ -111,11 +119,17 @@ form input, form button {
     margin-bottom: 15px;
 }
 
-.availbutton{background-color: lightskyblue ;
+.availbutton{ background-color: #17a2b8;
+    color: rgb(255, 255, 255);
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer; 
 margin-top: 30px;
 }
 
-.availbutton:hover{background-color: #a3a3a3;}
+.availbutton:hover{background-color: aquamarine;}
 
 .goback{background-color:lightblue ;
 margin-left: 95%;}
@@ -130,7 +144,8 @@ border-radius: 15px;}
 .inlin{background-color: rgba(255, 255, 255, 0.8);
 margin: 0%;
 width: 100%;
-padding: 25px;}
+padding: 25px;
+}
 
 .MainPage{background-color: rgba(255, 255, 255, 0.6);
 display: inline-block;
@@ -234,7 +249,7 @@ header {
   }
   
   /* Styles for devices with a screen width of 480px or less (mobile devices) */
-  @media (max-width: 480px) {
+  @media (max-width: 700px) {
     header {
       font-size: 18px;
     }
@@ -244,3 +259,81 @@ header {
     }
   }
   
+
+  .container {
+    max-width: 90%; /* Flexible width */
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+form {
+    width: 100%; /* Forms adapt to the screen size */
+}
+
+
+/* General styling for the header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color:  rgba(255, 255, 255, 0.8);
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Prevents overlap for smaller widths */
+}
+
+.header-left img {
+    height: 75px;
+    width: 75px;
+    margin-right: 10px;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 20px; /* Adjust font size for better fit */
+}
+
+.admin {
+    background-color: #17a2b8;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.admin a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Responsive adjustments for smaller screens */
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center align all elements */
+    }
+
+    .header-left {
+        justify-content: center;
+        margin-bottom: 10px; /* Add spacing between logo+heading and button */
+    }
+
+    .header-left h1 {
+        text-align: center; /* Center align text */
+        font-size: 18px; /* Reduce font size */
+    }
+
+    .admin {
+        width: auto; /* Prevent button from stretching */
+        padding: 8px 15px; /* Ensure consistent padding */
+        text-align: center;
+    }
+}

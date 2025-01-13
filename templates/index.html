@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
 
     <!-- Include Select2 CSS -->
@@ -96,13 +97,30 @@
                     transform: translateX(-50%) translateY(-20px);
                 }
             }
-        </style>
-        <div>
-            <img src="/static/images/Logo.jpg" alt="" height="75px" width="75px" style="position: absolute;margin-top: 5px;">
-            <h1 class="inlin" style="padding-left: 100px;">Welcome to {{ library.name }}</h1>
-        </div>
+            select {
+        width: 40%; /* Increased width for longer names */
+        padding: 10px;
+        font-size: 16px; /* Adjust font size */
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        <button class="admin" id="inlin" onclick="window.location.href='/admin'"><a href="/admin">Admin Login</a></button>
+    /* Optional: Enhance dropdown options */
+    select option {
+        font-size: 16px;
+    }
+        </style>
+        
+        <div class="header">
+            <!-- Logo and Heading -->
+            <div class="header-left">
+                <img src="/static/images/Logo.jpg" alt="Library Logo">
+                <h1>Welcome to {{ library.name }}</h1>
+            </div>
+            <!-- Admin Login Button -->
+            <button class="admin" onclick="window.location.href='/admin'">Admin Login</button>
+        </div>
 
         <center>
             <div class="MainPage" style="margin-top: 150px;">
@@ -131,7 +149,7 @@
                     <button type="submit">Return Book</button>
                 </form>
 
-                <button class="b" onclick="window.location.href='/display'"><a href="/display">View Available Books</a></button>
+                <button class="b" onclick="window.location.href='/display'">View Available Books</button>
             </div>
         </center>
     </main>
